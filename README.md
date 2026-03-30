@@ -1,16 +1,4 @@
-## [Edgebin](https://github.com/jiacai2050/edgebin)
-
-<p align="center">
-  <img src="docs/logo.svg" width="30%" />
-</p>
-
-[Edgebin](https://edgebin.liujiacai.net) is a HTTP testing service, with a focus on edge deployment.
-
-Inspired by the [httpbin.org](https://httpbin.org), it leverages the power of edge computing to deliver fast, reliable testing capabilities tailored for modern distributed networks.
-
-## Supported Platforms
-- [Cloudflare Workers](https://workers.cloudflare.com/). <https://edgebin.liujiacai.net>
-- [Deno Deploy](https://deno.com/deploy) in [deno branch](https://github.com/jiacai2050/edgebin/tree/deno). <https://deno.edgebin.liujiacai.net/>
+# HTTP 测试页面
 
 ## Features
 
@@ -122,22 +110,6 @@ All endpoints accept any HTTP method. Additionally, it includes features not fou
 
 If you find an endpoint is missing or notice any unexpected behavior, we welcome you to [open an issue](https://github.com/jiacai2050/edgebin/issues) or [submit a pull request](https://github.com/jiacai2050/edgebin/pulls).
 
-## Deploy
-
-Feel free to deploy your own instance of httpbin. The free tier of Cloudflare Workers is sufficient for most use cases.
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/jiacai2050/edgebin)
-
-If you'd like to share your public instance, please [let us know](https://github.com/jiacai2050/edgebin/discussions/4) and we'll add it to the list.
-
-We have a Telegram group for discussion: [https://t.me/edgebin](https://t.me/edgebin).
-
-### Public Instances
-
-| Instance                        | Maintainer                                   |
-| ------------------------------- | -------------------------------------------- |
-| <https://edgebin.liujiacai.net> | [@jiacai2050](https://github.com/jiacai2050) |
-
 ## Development
 
 ```bash
@@ -156,6 +128,3 @@ npm run deploy
 
 In the future, we may support other edge platforms like Vercel Edge Functions and Deno Deploy.
 
-## License
-
-[MIT License](https://github.com/jiacai2050/edgebin/blob/main/LICENSE)
