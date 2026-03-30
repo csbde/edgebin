@@ -1,0 +1,7 @@
+logs
+*.log
+npm-debug.log*
+node_modules/
+.wrangler/
+docs/index.html
+docs/version.json

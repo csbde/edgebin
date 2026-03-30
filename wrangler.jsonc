@@ -1,0 +1,24 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "edgebin",
+  "main": "src/index.js",
+  "compatibility_date": "2025-10-04",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "observability": {
+    "enabled": true,
+  },
+  "assets": {
+    "directory": "./docs/",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+  },
+  "build": {
+    "command": "npm run build",
+    "cwd": "./",
+    "watch_dir": "./src",
+  },
+}
