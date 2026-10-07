@@ -143,7 +143,9 @@ describe("Response formats", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toMatch(/text\/csv/);
     const text = await response.text();
-    expect(text).toContain("Index,Customer Id,First Name,Last Name,Company,City,Country,Phone 1,Phone 2,Email,Subscription Date,Website");
+    expect(text).toContain(
+      "Index,Customer Id,First Name,Last Name,Company,City,Country,Phone 1,Phone 2,Email,Subscription Date,Website",
+    );
   });
 
   it("csv dynamic asset path", async () => {
@@ -151,7 +153,9 @@ describe("Response formats", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("Content-Type")).toMatch(/text\/csv/);
     const text = await response.text();
-    expect(text).toContain("Index,Customer Id,First Name,Last Name,Company,City,Country,Phone 1,Phone 2,Email,Subscription Date,Website");
+    expect(text).toContain(
+      "Index,Customer Id,First Name,Last Name,Company,City,Country,Phone 1,Phone 2,Email,Subscription Date,Website",
+    );
   });
 
   it("csv dynamic asset path not found", async () => {
@@ -251,6 +255,55 @@ describe("image", () => {
       const arrayBuffer = await response.arrayBuffer();
       expect(arrayBuffer.byteLength).toBeGreaterThan(0);
     }
+  });
+
+  it("dynamic size", async () => {
+    const response = await do_request(`${ROOT}/image/640/480`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Content-Type")).toMatch(/image\/svg/);
+    const text = await response.text();
+    expect(text).toContain('width="640"');
+    expect(text).toContain('height="480"');
+    expect(text).toContain("640x480");
+  });
+
+  it("square size", async () => {
+    const response = await do_request(`${ROOT}/image/200/svg`);
+    expect(response.status).toBe(200);
+    const text = await response.text();
+    expect(text).toContain('width="200"');
+    expect(text).toContain('height="200"');
+  });
+
+  it("custom color and text", async () => {
+    const response = await do_request(
+      `${ROOT}/image/300/200?background=FF0000&foreground=%2300f&text=%3Cb%3E`,
+    );
+    expect(response.status).toBe(200);
+    const text = await response.text();
+    expect(text).toContain('fill="#FF0000"');
+    expect(text).toContain('fill="#00f"');
+    expect(text).toContain("&lt;b&gt;");
+    expect(text).not.toContain("<b>");
+  });
+
+  it("invalid size", async () => {
+    for (const url of [
+      `${ROOT}/image/abc`,
+      `${ROOT}/image/0`,
+      `${ROOT}/image/-1`,
+      `${ROOT}/image/1.5`,
+      `${ROOT}/image/70000`,
+      `${ROOT}/image/1/2/3/4`,
+    ]) {
+      const response = await do_request(url);
+      expect(response.status, url).toBe(400);
+    }
+  });
+
+  it("unsupported format with size", async () => {
+    const response = await do_request(`${ROOT}/image/640/480/png`);
+    expect(response.status).toBe(400);
   });
 });
 

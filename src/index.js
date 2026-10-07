@@ -12,6 +12,7 @@ import {
 import { websocketHandler } from "./ws.js";
 import { handleMix } from "./mix.js";
 import { handleWebhook } from "./webhook.js";
+import { handleImage } from "./image.js";
 import { handlePageMeta } from "./page-meta.js";
 
 export default {
@@ -162,6 +163,31 @@ async function handle(req, env, ctx) {
       }
       const [, name, limit] = parts;
       return env.ASSETS.fetch(new URL(`/csv/${name}-${limit}.csv`, req.url));
+    }
+    // Placeholder images: /image, /image/:size, /image/:width/:height[/svg]
+    case "image": {
+      // /image or /image/: pick a sample image by the Accept header
+      if (parts.length === 1 || (parts.length === 2 && parts[1] === "")) {
+        const typeMap = {
+          "image/svg+xml": "logo.svg",
+          "image/webp": "image.webp",
+          "image/jpeg": "image.jpeg",
+          "image/png": "image.png",
+        };
+        let filename = "image.png";
+        for (const type of (req.headers.get("Accept") || "").split(",")) {
+          const key = type.trim().split(";")[0];
+          if (typeMap[key]) {
+            filename = typeMap[key];
+            break;
+          }
+        }
+        return env.ASSETS.fetch(new URL(`/${filename}`, req.url));
+      }
+      if (parts.length > 4) {
+        throw new CustomError("Too many path segments for /image", 400);
+      }
+      return handleImage(parts, searchParams);
     }
     case "encoding": {
       const charset = parts[1];
